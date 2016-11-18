@@ -4,6 +4,13 @@
 angular.module('sudokugame', [])
     .controller('mainCtrl', ['$scope', function ($scope) {
         $scope.grid = [[],[],[],[],[],[],[],[],[]];
+        $scope.selectedClass = '';
+        $scope.possibleValue = [1,2,3,4,5,6,7,8,9];
+        $scope.selectedCell = {
+            selected: false,
+            x: null,
+            y: null
+        };
         $scope.generate = function () {
             fillGrid();
             for (var i=0; i<10; i++) {
@@ -12,6 +19,7 @@ angular.module('sudokugame', [])
                 horizontal3($scope.grid);
                 vertical1horizontal($scope.grid);
             }
+            $scope.pole = removeCells($scope.grid);
         };
         function fillGrid() {
             var n=3;
@@ -21,11 +29,11 @@ angular.module('sudokugame', [])
                 }
             }
         }
-        function transpose(arr) {
+        function transpose(pole) {
             var newArr = [[],[],[],[],[],[],[],[],[]];
-            for (var i=0; i<arr.length; i++) {
-                for (var j=0; j<arr.length; j++) {
-                    newArr[j][i] = arr[i][j];
+            for (var i=0; i<pole.length; i++) {
+                for (var j=0; j<pole.length; j++) {
+                    newArr[j][i] = pole[i][j];
                 }
             }
             return newArr;
@@ -36,9 +44,9 @@ angular.module('sudokugame', [])
             if (first===second) { vertical3(pole); }
             else {
                 for (var i=0; i<9; i++) {
-                    [$scope.grid[i][first*3], $scope.grid[i][second*3]] = [$scope.grid[i][second*3], $scope.grid[i][first*3]];
-                    [$scope.grid[i][first*3+1], $scope.grid[i][second*3+1]] = [$scope.grid[i][second*3+1], $scope.grid[i][first*3+1]];
-                    [$scope.grid[i][first*3+2], $scope.grid[i][second*3+2]] = [$scope.grid[i][second*3+2], $scope.grid[i][first*3+2]];
+                    [pole[i][first*3], pole[i][second*3]] = [pole[i][second*3], pole[i][first*3]];
+                    [pole[i][first*3+1], pole[i][second*3+1]] = [pole[i][second*3+1], pole[i][first*3+1]];
+                    [pole[i][first*3+2], pole[i][second*3+2]] = [pole[i][second*3+2], pole[i][first*3+2]];
                 }
             }
         }
@@ -48,9 +56,9 @@ angular.module('sudokugame', [])
             if (first===second) { horizontal3(pole); }
             else {
                 for (var i=0; i<9; i++) {
-                    [$scope.grid[first*3][i], $scope.grid[second*3][i]] = [$scope.grid[second*3][i], $scope.grid[first*3][i]];
-                    [$scope.grid[first*3+1][i], $scope.grid[second*3+1][i]] = [$scope.grid[second*3+1][i], $scope.grid[first*3+1][i]];
-                    [$scope.grid[first*3+2][i], $scope.grid[second*3+2][i]] = [$scope.grid[second*3+2][i], $scope.grid[first*3+2][i]];
+                    [pole[first*3][i], pole[second*3][i]] = [pole[second*3][i], pole[first*3][i]];
+                    [pole[first*3+1][i], pole[second*3+1][i]] = [pole[second*3+1][i], pole[first*3+1][i]];
+                    [pole[first*3+2][i], pole[second*3+2][i]] = [pole[second*3+2][i], pole[first*3+2][i]];
                 }
             }
         }
@@ -67,19 +75,80 @@ angular.module('sudokugame', [])
                 first += k*3;
                 second += k*3;
                 for (i = 0; i < 9; i++) {
-                    [$scope.grid[i][first], $scope.grid[i][second]] = [$scope.grid[i][second], $scope.grid[i][first]];
+                    [pole[i][first], pole[i][second]] = [pole[i][second], pole[i][first]];
                 }
                 for (i = 0; i < 9; i++) {
-                    [$scope.grid[first][i], $scope.grid[second][i]] = [$scope.grid[second][i], $scope.grid[first][i]];
+                    [pole[first][i], pole[second][i]] = [pole[second][i], pole[first][i]];
                 }
             }
 
         }
         function removeCells(pole) {
-            for (var i=0; i<3; i++) {
-                var rand = Math.floor(Math.random()*9);
-
+            var i,
+                novePole = [[],[],[],[],[],[],[],[],[]];
+            for (i=0; i<9; i++) {
+                for (var j = 0; j < 9; j++) {
+                    novePole[i][j] = {
+                        number: pole[i][j],
+                        edit: false
+                    }
+                }
             }
+            for (i=0; i<50; i++) {
+                var vertical = Math.floor(Math.random()*9),
+                    horizontal = Math.floor(Math.random()*9);
+                novePole[vertical][horizontal] = {
+                    number: null,
+                    edit: true
+                };
+            }
+            return novePole;
         }
+        $scope.selected = function (x, y, ifselected) {
+            if (ifselected) {
+                $scope.selectedCell = {
+                    selected: false,
+                    x: null,
+                    y: null
+                }
+            }
+            else {
+                $scope.selectedCell = {
+                    selected: true,
+                    x: x,
+                    y: y
+                };
+            }
+        };
+        $scope.chooseValue = function(num) {
+            if ($scope.selectedCell.selected) {
+                $scope.pole[$scope.selectedCell.y][$scope.selectedCell.x].number = num;
+                $scope.selectedCell = {
+                    selected: false,
+                    x: null,
+                    y: null
+                };
+            }
+        };
+        $scope.restart = function () {
+            for (i=0; i<9; i++) {
+                for (var j = 0; j < 9; j++) {
+                    if ($scope.pole[i][j].edit) {
+                        $scope.pole[i][j].number = null;
+                    }
+                }
+            }
+        };
+        $scope.solution = function () {
+            for (i=0; i<9; i++) {
+                for (var j = 0; j < 9; j++) {
+                    $scope.pole[i][j].number = $scope.grid[i][j];
+                }
+            }
+        };
+        $scope.keyboardInput = function () {
+            console.log('lkdfj');
+            //$scope.pole[$scope.selectedCell.y][$scope.selectedCell.x]
+        };
         $scope.generate();
     }]);

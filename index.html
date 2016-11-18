@@ -17,22 +17,35 @@
         <p>Sudoku</p>
     </header>
     <section id="sudoku" data-ng-controller="mainCtrl">
-        <table class="outer">
-            <tbody>
-            <tr ng-repeat='line in [0,1,2,3,4,5,6,7,8]'>
-                <td ng-repeat='value in [0,1,2,3,4,5,6,7,8]'>
-                    {{grid[line][value]}}
-                    <!--table class="inner">
-                        <tbody>
-                        <tr><td>{{0*line3x9*line3x3}}</td><td>{{1*line3x9}}</td><td>2</td></tr>
-                        <tr><td>{{0*line3x9*line3x3}}</td><td>{{1*line3x9}}</td><td>2</td></tr>
-                        <tr><td>{{0*line3x9*line3x3}}</td><td>{{1*line3x9}}</td><td>2</td></tr>
-                        </tbody>
-                    </table-->
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div id="flexbox">
+            <div>
+                <table>
+                    <tbody>
+                    <tr ng-repeat='line in [0,1,2,3,4,5,6,7,8]'>
+                        <td ng-repeat='value in [0,1,2,3,4,5,6,7,8]'
+                            ng-class="[{emptyCell: pole[line][value].edit===true}, {selected: (selectedCell.x == value && selectedCell.y === line && pole[line][value].edit===true)}]"
+                            ng-click="selected(value, line, (selectedCell.x == value && selectedCell.y === line))"
+                            ng-keypress="keyboardInput()">
+                            {{pole[line][value].number}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="panel">
+                <div>
+                    <button type="button" class="btn btn-default btn-lg" ng-click="generate()">New game</button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-lg" ng-click="restart()">Restart</button>
+                    <button type="button" class="btn btn-default btn-lg" ng-click="solution()">Solution</button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-repeat="number in possibleValue track by $index" ng-click="chooseValue(number)">{{number}}</button>
+                    <button type="button" class="btn btn-default" ng-click="">Delete</button>
+                </div>
+            </div>
+        </div>
     </section>
 </body>
 </html>
