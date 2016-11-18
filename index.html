@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="sudokugame">
+<head>
+    <meta charset="UTF-8">
+    <title>Sudoku game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+</head>
+<body>
+    <header>
+        <p>Sudoku</p>
+    </header>
+    <section id="sudoku" data-ng-controller="mainCtrl">
+        <table class="outer">
+            <tbody>
+            <tr ng-repeat='line in [0,1,2,3,4,5,6,7,8]'>
+                <td ng-repeat='value in [0,1,2,3,4,5,6,7,8]'>
+                    {{grid[line][value]}}
+                    <!--table class="inner">
+                        <tbody>
+                        <tr><td>{{0*line3x9*line3x3}}</td><td>{{1*line3x9}}</td><td>2</td></tr>
+                        <tr><td>{{0*line3x9*line3x3}}</td><td>{{1*line3x9}}</td><td>2</td></tr>
+                        <tr><td>{{0*line3x9*line3x3}}</td><td>{{1*line3x9}}</td><td>2</td></tr>
+                        </tbody>
+                    </table-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>
