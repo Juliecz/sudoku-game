@@ -155,6 +155,9 @@ angular.module('sudokugame', [])
                         $scope.pole[i][j].class = 'warning';
                         $scope.pole[i][j].number = $scope.grid[i][j];
                     }
+                    else {
+                        $scope.pole[i][j].class = 'success';
+                    }
                 }
             }
         };
