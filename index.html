@@ -29,13 +29,16 @@
                 <tr ng-repeat='line in [0,1,2,3,4,5,6,7,8]'>
                     <td ng-repeat='value in [0,1,2,3,4,5,6,7,8]'
                         ng-class="[{emptyCell: pole[line][value].edit===true}, {selected: (selectedCell.x == value && selectedCell.y === line && pole[line][value].edit)}, pole[line][value].class]"
-                        ng-click="selected(value, line, (selectedCell.x == value && selectedCell.y === line)); pole[line][value].visNumbers=(pole[line][value].visNumbers)?false:true;">
+                        ng-click="selected(value, line, (selectedCell.x == value && selectedCell.y === line));">
                         {{pole[line][value].number}}
-                        <table id="numbers" ng-show="pole[line][value].visNumbers && pole[line][value].edit && selectedCell.x == value && selectedCell.y === line">
+                        <table id="numbers" ng-show="showNumbers(value, line);">
                             <tr ng-repeat="y in [1,4,7]">
-                                <td ng-repeat="x in [0,1,2]" ng-click="chooseValue(x+y);">
+                                <td ng-repeat="x in [0,1,2]" ng-click="chooseValue(value, line, (x+y));">
                                     <a href="">{{x+y}}</a>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"><a href="" ng-click="pole[line][value].number=null;">Delete</a></td>
                             </tr>
                         </table>
                     </td>

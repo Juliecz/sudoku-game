@@ -39,22 +39,22 @@ section {
     text-align: center;
     border: 4px solid #d7d7d7;
 }
-#sudokuTable tr:nth-child(3n):not(:last-child) {
+#sudokuTable > tbody > tr:nth-child(3n):not(:last-child) {
     border-bottom: 4px solid #d7d7d7;
 }
-#sudokuTable tr td {
+#sudokuTable > tbody > tr > td {
     border: 1px solid #d7d7d7;
     width: 50px;
     height: 50px;
 }
-#sudokuTable tr td:not(.emptyCell) {
+#sudokuTable > tbody > tr > td:not(.emptyCell) {
     background-color: #ececec;
     font-size: medium;
 }
-#sudokuTable tr td.emptyCell:not(.selected):hover {
+#sudokuTable > tbody > tr > td.emptyCell:not(.selected):hover {
     background-color: white;
 }
-#sudokuTable tr td:nth-child(3n):not(:last-child) {
+#sudokuTable > tbody > tr > td:nth-child(3n):not(:last-child) {
     border-right: 4px solid #d7d7d7;
 }
 .emptyCell {
@@ -78,6 +78,7 @@ section {
     width: 20px;
     height: 20px;
     background-color: #03cf8b !important;
+    border: 1px solid #d7d7d7;
 }
 #numbers tr td a, #numbers tr td a:hover:active:visited:link {
     text-decoration: none;

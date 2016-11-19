@@ -105,7 +105,6 @@ angular.module('sudokugame', [])
             return novePole;
         }
         $scope.selected = function (x, y, ifselected) {
-            // unselect
             if (ifselected) {
                 $scope.selectedCell = {
                     selected: false,
@@ -113,7 +112,6 @@ angular.module('sudokugame', [])
                     y: null
                 };
             }
-            //select
             else {
                 $scope.selectedCell = {
                     selected: true,
@@ -123,14 +121,9 @@ angular.module('sudokugame', [])
             }
         };
 
-        $scope.chooseValue = function(num) {
+        $scope.chooseValue = function(x, y, num) {
             $scope.pole[$scope.selectedCell.y][$scope.selectedCell.x].number = num;
-            $scope.selected(null, null, true);
-            /*$scope.selectedCell = {
-             selected: false,
-             x: null,
-             y: null
-             };*/
+            $scope.showNumbers(x, y);
             console.log($scope.selectedCell);
         };
         $scope.restart = function () {
@@ -160,6 +153,9 @@ angular.module('sudokugame', [])
                     }
                 }
             }
+        };
+        $scope.showNumbers = function (x,y) {
+            return ($scope.pole[y][x].edit && $scope.selectedCell.selected && $scope.selectedCell.x === x && $scope.selectedCell.y === y);
         };
         $scope.generate();
     }]);
